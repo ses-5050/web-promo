@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import userServices from '../services/userServices';
 import toast from 'toast-me';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class Profile extends React.Component {
 
@@ -47,101 +48,108 @@ class Profile extends React.Component {
 
     componentDidMount() {
         // this.onImageChange = this.onImageChange.bind(this);
-        userServices.getUserById(sessionStorage.getItem("user")).then(res => {
-            console.log("data->", res.data)
-            if (res.data.user != null) {
-                if (res.data.user.fname != null) {
-                    this.setState({ fname: res.data.user.fname });
-                }
-                if (res.data.user.lname != null) {
-                    this.setState({ lname: res.data.user.lname });
-                }
-                if (res.data.user.fname != null) {
-                    this.setState({ c_fname: res.data.user.fname });
-                }
-                if (res.data.user.lname != null) {
-                    this.setState({ c_lname: res.data.user.lname });
-                }
-                if (res.data.user.email != null) {
-                    this.setState({ email: res.data.user.email });
-                }
-                if (res.data.user.mobile != null && res.data.user.mobile != 0) {
-                    this.setState({ mobile: res.data.user.mobile });
-                }
-                if (res.data.user.gender != null) {
-                    this.setState({ gender: res.data.user.gender });
-                }
-                if (res.data.user.dob != null) {
-                    this.setState({ dob: res.data.user.dob });
-                }
-                if (res.data.user.specialization != null) {
-                    this.setState({ specialization: res.data.user.specialization });
-                }
-                if (res.data.user.education != null) {
-                    this.setState({ education: res.data.user.education });
-                }
-                if (res.data.user.status == "verified") {
-                    this.removeVerifyEmail();
-                }
-                if (res.data.user.img != null) {
-                    this.setState({ profileimage: "http://127.0.0.1:8887/" + res.data.user.img });
-                }
-            }
-            if (res.data.fname != null) {
-                this.setState({ fname: res.data.fname });
-            }
-            if (res.data.lname != null) {
-                this.setState({ lname: res.data.lname });
-            }
-            if (res.data.addresno != null) {
-                this.setState({ number: res.data.addresno });
-            }
-            if (res.data.country != null) {
-                this.setState({ country: res.data.country });
-            }
-            if (res.data.street != null) {
-                this.setState({ street: res.data.street });
-            }
-            if (res.data.city != null) {
-                this.setState({ city: res.data.city });
-            }
-            if (res.data.postal != null) {
-                this.setState({ postalcode: res.data.postal });
-            }
-            if (res.data.currency != null) {
-                this.setState({ currency: res.data.currency });
-            }
-            if (res.data.region != null) {
-                this.setState({ stateorregion: res.data.region });
-            }
+        // var user = sessionStorage.getItem("user");
+alert(Cookies.get('user'))
+        
+        // if (user != null) {
+        //     userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+        //         if (res.data.user != null) {
+        //             if (res.data.user.fname != null) {
+        //                 this.setState({ fname: res.data.user.fname });
+        //             }
+        //             if (res.data.user.lname != null) {
+        //                 this.setState({ lname: res.data.user.lname });
+        //             }
+        //             if (res.data.user.fname != null) {
+        //                 this.setState({ c_fname: res.data.user.fname });
+        //             }
+        //             if (res.data.user.lname != null) {
+        //                 this.setState({ c_lname: res.data.user.lname });
+        //             }
+        //             if (res.data.user.email != null) {
+        //                 this.setState({ email: res.data.user.email });
+        //             }
+        //             if (res.data.user.mobile != null && res.data.user.mobile != 0) {
+        //                 this.setState({ mobile: res.data.user.mobile });
+        //             }
+        //             if (res.data.user.gender != null) {
+        //                 this.setState({ gender: res.data.user.gender });
+        //             }
+        //             if (res.data.user.dob != null) {
+        //                 this.setState({ dob: res.data.user.dob });
+        //             }
+        //             if (res.data.user.specialization != null) {
+        //                 this.setState({ specialization: res.data.user.specialization });
+        //             }
+        //             if (res.data.user.education != null) {
+        //                 this.setState({ education: res.data.user.education });
+        //             }
+        //             if (res.data.user.status == "verified") {
+        //                 this.removeVerifyEmail();
+        //             }
+        //             if (res.data.user.img != null) {
+        //                 this.setState({ profileimage: "http://127.0.0.1:8887/" + res.data.user.img });
+        //             }
+        //         }
+        //         if (res.data.fname != null) {
+        //             this.setState({ fname: res.data.fname });
+        //         }
+        //         if (res.data.lname != null) {
+        //             this.setState({ lname: res.data.lname });
+        //         }
+        //         if (res.data.addresno != null) {
+        //             this.setState({ number: res.data.addresno });
+        //         }
+        //         if (res.data.country != null) {
+        //             this.setState({ country: res.data.country });
+        //         }
+        //         if (res.data.street != null) {
+        //             this.setState({ street: res.data.street });
+        //         }
+        //         if (res.data.city != null) {
+        //             this.setState({ city: res.data.city });
+        //         }
+        //         if (res.data.postal != null) {
+        //             this.setState({ postalcode: res.data.postal });
+        //         }
+        //         if (res.data.currency != null) {
+        //             this.setState({ currency: res.data.currency });
+        //         }
+        //         if (res.data.region != null) {
+        //             this.setState({ stateorregion: res.data.region });
+        //         }
 
 
-            if (this.state.profileimage == "") {
-                this.setState({ profileimage: "assets\\images\\icons\\userii.jpg" });
-            }
-        });
+        //         if (this.state.profileimage == "") {
+        //             this.setState({ profileimage: "assets\\images\\icons\\userii.jpg" });
+        //         }
+        //     });
 
-        userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
-            if (res.data == "compeleted") {
-                this.setState({ profilecomplete: 'Your profile is 100% completed' });
-            } else {
-                this.setState({ profilecomplete: res.data });
-            }
-        });
-        userServices.getEarnedPoints(sessionStorage.getItem("user")).then(res => {
-            if (res.data.email != null) {
-                this.setState({ premail: res.data.email });
-            }
-            if (res.data.mobile != null) {
-                this.setState({ prmobile: res.data.mobile });
-            }
-            if (res.data.points != null) {
-                this.setState({ prearningtotal: res.data.points });
-            }
-        });
+        //     userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
+        //         if (res.data == "compeleted") {
+        //             this.setState({ profilecomplete: 'Your profile is 100% completed' });
+        //         } else {
+        //             this.setState({ profilecomplete: res.data });
+        //         }
+        //     });
+        //     userServices.getEarnedPoints(sessionStorage.getItem("user")).then(res => {
+        //         if (res.data.email != null) {
+        //             this.setState({ premail: res.data.email });
+        //         }
+        //         if (res.data.mobile != null) {
+        //             this.setState({ prmobile: res.data.mobile });
+        //         }
+        //         if (res.data.points != null) {
+        //             this.setState({ prearningtotal: res.data.points });
+        //         }
+        //     });
+        // } else {
+        //     this.props.history.push('/login');
+        // }
     }
 
     changeThumbnail = e => {
+
         this.setState({ thumbnail: e.target.files });
         let upload = { thumbnail: e.target.files }
         console.log('user=>' + JSON.stringify(upload));
@@ -248,9 +256,9 @@ class Profile extends React.Component {
 
     sendEmail = (e) => {
         userServices.sendVerificationEmail(sessionStorage.getItem("user")).then(res => {
-            if (res.data==="success") {
+            if (res.data === "success") {
                 toast('Email sent. Check your inbox');
-            }else{
+            } else {
                 toast('Something went wrong. Contact support');
             }
         });

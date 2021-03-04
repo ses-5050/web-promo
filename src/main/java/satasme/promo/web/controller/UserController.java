@@ -96,7 +96,7 @@ public class UserController {
 		Criteria cr = em.unwrap(Session.class).createCriteria(User.class);
 		cr.add(Restrictions.eq("id", userid));
 		User crruser = (User) cr.uniqueResult();
-		String emailtext="Please click below link to verify your email."
+		String emailtext="Please click below link to verify your email.   "
 				+ "emoneytag.com/verifyemail?click="+crruser.getRefcode().replace("[", "");
 		sendEmail(crruser.getEmail(), "Email Verification For EmoneyTag", emailtext);
 		return "success";
@@ -104,14 +104,19 @@ public class UserController {
 	
 	@PostMapping("/{id}/verifyemail")
 	public String verifyEmail(@PathVariable(value = "id") String refid) {
-		Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
-		cr2.add(Restrictions.eq("refcode", "["+refid));
-		User crruser = (User) cr2.uniqueResult();
-		if(crruser.getStatus().equals("notverified")) {
-			crruser.setStatus("verified");
-			return "success";
-		}else {
-			return "already verified";
+		try {
+			Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
+			cr2.add(Restrictions.eq("refcode", "["+refid));
+			User crruser = (User) cr2.uniqueResult();
+			if(crruser.getStatus().equals("notverified")) {
+				crruser.setStatus("verified");
+				this.userRepository.save(crruser);
+				return "success";
+			}else {
+				return "already verified";
+			}
+		} catch (Exception e) {
+			return "failed";
 		}
 	}
 

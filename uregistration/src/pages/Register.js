@@ -11,6 +11,7 @@ import FacebookLogin from 'react-facebook-login';
 import userServices from '../services/userServices';
 import SessionKeystore from 'session-keystore'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import queryString from 'query-string';
 
 
 const CLIENT_ID = '613851969001-bakoc12jk787o0k34plimm6cq1tsklra.apps.googleusercontent.com';

@@ -6,6 +6,7 @@ import userServices from '../services/userServices';
 import { Link } from 'react-router-dom';
 import toast from 'toast-me';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import Cookies from 'js-cookie';
 
 
 const CLIENT_ID = '613851969001-bakoc12jk787o0k34plimm6cq1tsklra.apps.googleusercontent.com';
@@ -51,7 +52,8 @@ class Login extends React.Component {
             let user = { email: this.state.email, key: this.state.key, }
             userServices.logIn(user).then(res => {
                 if (res.data !== 'failed') {
-                    sessionStorage.setItem("user", res.data)
+                    // sessionStorage.setItem("user", res.data)
+                    Cookies.set('user', res.data, { secure: true });
                     this.props.history.push('/userhome');
                 } else {
                     toast('Email or Password invalid!');
@@ -155,7 +157,8 @@ class Login extends React.Component {
             let user = { email: response.profileObj.email, key: 'google' }
             userServices.googleLogIn(user).then(res => {
                 if (res.data.id !== null) {
-                    sessionStorage.setItem("user", res.data.user.id)
+                    // sessionStorage.setItem("user", res.data.user.id)
+                    Cookies.set('user', res.data.user.id);
                     this.props.history.push('/userhome');
                 } else {
                     toast('Server maybe offline. Try again later!');

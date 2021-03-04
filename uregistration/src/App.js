@@ -54,6 +54,8 @@ import EYoutube from "./pages/temp/EYoutube";
 import ETwitter from "./pages/temp/ETwitter";
 import ETikTok from "./pages/temp/ETikTok";
 import Dashb from "./pages/Dash";
+import VerifyEmail from "./pages/temp/VerifyEmail";
+
 
 //end admin
 
@@ -150,6 +152,7 @@ class App extends Component {
                      <Route path="/ytsub" component={YTSub}></Route>
                      <Route path="/tiktokfollow" component={TiktokFollow}></Route>
                      <Route path="/twitterfollow" component={TwitterFollow}></Route>
+                     <Route path="/verifyemail" component={VerifyEmail}></Route>
                      {/* temp path end */}
 
 
