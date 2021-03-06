@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
 import userServices from "../services/userServices";
+import Cookies from 'js-cookie';
 
 class Dash extends React.Component {
     constructor(props) {
@@ -25,32 +26,32 @@ class Dash extends React.Component {
     }
 
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
-            earningService.getToday(sessionStorage.getItem("user")).then(res => {
+            earningService.getToday(Cookies.get('user')).then(res => {
                 this.setState({ today_earning: res.data });
             });
 
-            earningService.getYesterdayEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getYesterdayEarning(Cookies.get('user')).then(res => {
                 this.setState({ yesterday_earning: res.data });
             });
 
-            earningService.getWeekEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getWeekEarning(Cookies.get('user')).then(res => {
                 this.setState({ week_earning: res.data });
             });
 
-            earningService.getMonthEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getMonthEarning(Cookies.get('user')).then(res => {
                 this.setState({ month_earning: res.data });
             });
 
-            earningService.getBalance(sessionStorage.getItem("user")).then(res => {
+            earningService.getBalance(Cookies.get('user')).then(res => {
                 this.setState({ balance: res.data });
             });
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {

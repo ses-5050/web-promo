@@ -4,6 +4,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class Howitworks extends React.Component {
   render() {
@@ -14,7 +15,7 @@ class Howitworks extends React.Component {
         style={{ backgroundColor: "white", height: "100%", width: "100%" }}
       >
         <Helmet>
-          <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
           <link rel="stylesheet" href="/assets/assets/fonts/ionicons.min.css" />
           <link rel="stylesheet" href="/assets/assets/css/Footer-Dark.css" />
           <link rel="stylesheet" href="/assets/assets/css/styles.css"></link>
@@ -22,46 +23,69 @@ class Howitworks extends React.Component {
           <link rel="stylesheet" href="/assets/css/Article-Cards.css" />
           <link rel="stylesheet" href="/assets/css/Team-Boxed.css" />
           <link rel="stylesheet" href="/assets/css/Article-List.css" />
-          <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css" />
         </Helmet>
-        <header
-          class="header"
-          style={{ backgroundColor: "white", height: "10%", width: "100%" }}
-        >
-          <section class="container header__inner">
-            <a class="action" href="homebl">
-              <i
-                class="fa fa-arrow-circle-left"
-                style={{ fontSize: "34px", paddingTop: "5px" }}
-              ></i>
-            </a>
-            &emsp;&emsp;
-            <div class="header__left">
-              <a
-                href="/homebl"
-                class="nav__link pricing__link text_violet"
-              >
-                <div style={{ paddingTop: "14px" }}> Home </div>
-              </a>
-            </div>
-            <div class="header__right">
-              <a href="/register" class="button-register button_yellow ">
-                Registration
-              </a>
+        {(() => {
+          if (Cookies.get('user') == null) {
+            <header class="header" style={{ backgroundColor: "white", height: "10%", width: "100%" }}>
 
-              <a href="/login" class="button-enter button_yellow ">
-                <div class="button-enter__text">
-                  <span>Login</span>
+              <section class="container header__inner" >
+                <div class="header__left" >
+
+                  <a href="/howitworks" class="nav__link pricing__link text_violet" >
+                    How it Works
+                            </a>
                 </div>
-                <img
-                  class="button-enter__icon"
-                  src="assets/Image/earn/user.svg"
-                  alt=""
-                ></img>
-              </a>
-            </div>
-          </section>
-        </header>
+                <div class="header__right">
+                  <a href="/register" class="button-register button_yellow ">
+                    Registration
+                            </a>
+                  <a href="/login" class="button-enter button_yellow ">
+                    <div class="button-enter__text">
+                      <span>Login</span>
+                    </div>
+                    <img class="button-enter__icon" src="assets/Image/earn/user.svg" alt=""></img>
+                  </a>
+                </div>
+              </section>
+
+            </header>
+          } else {
+            return (
+              <header class="header" style={{ padding: "0 20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 4px rgba(0,0,0,.05)" }}>
+
+                <section class="container header__inner">
+
+                  <div class="header__left">
+                    <a href="/userhome">
+                      <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} alt="Emoneytag" title="Emoneytag" />
+                    </a>
+                    <br />
+                  </div>
+                  <div class="header__right">
+                    {/* <Link to="/profile" > */}
+                    {/* <div class="accounticon">
+                                        <a href="#">   Contact us </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div> */}
+                    {/* </Link> */}
+                    <div class="accounticon">
+                      <a href="/dash">  Dashboard&nbsp; </a>
+                    </div>
+                    <a href="/profile" >
+                      <div class="accounticon">
+                        <button type="button" class="btn btn-link btn-lg">
+                          <i class="fa fa-user-circle-o"></i></button>
+                      </div>
+                    </a>
+
+
+
+                  </div>
+                </section>
+
+              </header>
+            )
+          }
+        })()}
         <div
           style={{ height: "100%", width: "100%", backgroundColor: "white" }}
         >
@@ -90,14 +114,12 @@ class Howitworks extends React.Component {
                   How to Make Money Online
                 </p>
 
-                <Link to="/howitworks1">
-                  <a class="action">
+                  <a class="action" href="/howitworks1">
                     <i
                       class="fa fa-arrow-circle-right"
                       style={{ fontSize: "64px" }}
                     ></i>
                   </a>
-                </Link>
               </div>
             </div>
             <div
@@ -112,14 +134,12 @@ class Howitworks extends React.Component {
                   Promote your YouTube/ Social media page
                 </p>
 
-                <Link to="/howitworks2">
-                  <a class="action">
+                  <a class="action" href="/howitworks2">
                     <i
                       class="fa fa-arrow-circle-right"
                       style={{ fontSize: "64px" }}
                     ></i>
                   </a>
-                </Link>
               </div>
             </div>
           </div>

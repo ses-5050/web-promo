@@ -2,13 +2,18 @@ package satasme.promo.web.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 import javax.imageio.ImageIO;
 import javax.mail.internet.MimeMessage;
@@ -42,6 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import satasme.promo.web.entity.ImageModel;
 import satasme.promo.web.entity.Login;
 import satasme.promo.web.entity.PaymentReceiver;
 import satasme.promo.web.entity.Points;
@@ -51,6 +57,7 @@ import satasme.promo.web.entity.VideoUpload;
 import satasme.promo.web.exceptions.ResourceNotFoundException;
 import satasme.promo.web.model.RandomString;
 import satasme.promo.web.repository.LoginRepository;
+import satasme.promo.web.repository.PRImageRepository;
 import satasme.promo.web.repository.PaymentReceiverRepository;
 import satasme.promo.web.repository.PaymentReceiverRepositoryImpl;
 import satasme.promo.web.repository.UserPointsRepository;
@@ -76,6 +83,9 @@ public class UserController {
 	@Autowired
 	private FilesStorageService storageService;
 	@Autowired
+	PRImageRepository primageRepository;
+
+	@Autowired
 	private JavaMailSender javaMailSender;
 
 	@GetMapping
@@ -96,23 +106,23 @@ public class UserController {
 		Criteria cr = em.unwrap(Session.class).createCriteria(User.class);
 		cr.add(Restrictions.eq("id", userid));
 		User crruser = (User) cr.uniqueResult();
-		String emailtext="Please click below link to verify your email.   "
-				+ "emoneytag.com/verifyemail?click="+crruser.getRefcode().replace("[", "");
+		String emailtext = "Please click below link to verify your email.   " + "emoneytag.com/verifyemail?click="
+				+ crruser.getRefcode().replace("[", "");
 		sendEmail(crruser.getEmail(), "Email Verification For EmoneyTag", emailtext);
 		return "success";
 	}
-	
+
 	@PostMapping("/{id}/verifyemail")
 	public String verifyEmail(@PathVariable(value = "id") String refid) {
 		try {
 			Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
-			cr2.add(Restrictions.eq("refcode", "["+refid));
+			cr2.add(Restrictions.eq("refcode", "[" + refid));
 			User crruser = (User) cr2.uniqueResult();
-			if(crruser.getStatus().equals("notverified")) {
+			if (crruser.getStatus().equals("notverified")) {
 				crruser.setStatus("verified");
 				this.userRepository.save(crruser);
 				return "success";
-			}else {
+			} else {
 				return "already verified";
 			}
 		} catch (Exception e) {
@@ -148,12 +158,12 @@ public class UserController {
 				Criteria cr = em.unwrap(Session.class).createCriteria(Points.class);
 				cr.add(Restrictions.eq("pointSource", "Referal"));
 				Points points = (Points) cr.uniqueResult();
-				
-				String refid=node.get("referal").asText();
+
+				String refid = node.get("referal").asText();
 				Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
-				cr2.add(Restrictions.eq("refcode", "["+refid));
+				cr2.add(Restrictions.eq("refcode", "[" + refid));
 				User refuser = (User) cr2.uniqueResult();
-				
+
 				UserPoints userPoints = new UserPoints();
 				userPoints.setPoints(points.getPoints());
 				userPoints.setPointSource("Referal");
@@ -192,7 +202,7 @@ public class UserController {
 		}
 
 	}
-	
+
 	@PostMapping("/google")
 	public Login googleUser(@RequestBody ObjectNode node) {
 		try {
@@ -202,12 +212,12 @@ public class UserController {
 				Criteria cr = em.unwrap(Session.class).createCriteria(Points.class);
 				cr.add(Restrictions.eq("pointSource", "Referal"));
 				Points points = (Points) cr.uniqueResult();
-				
-				String refid=node.get("referal").asText();
+
+				String refid = node.get("referal").asText();
 				Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
 				cr2.add(Restrictions.eq("refcode", refid));
 				User refuser = (User) cr2.uniqueResult();
-				
+
 				UserPoints userPoints = new UserPoints();
 				userPoints.setPoints(points.getPoints());
 				userPoints.setPointSource("Referal");
@@ -218,14 +228,14 @@ public class UserController {
 			}
 			Criteria cruser = em.unwrap(Session.class).createCriteria(User.class);
 			cruser.add(Restrictions.eq("email", node.get("email").asText()));
-			User getuser=(User) cruser.uniqueResult();
-			
+			User getuser = (User) cruser.uniqueResult();
+
 			Criteria crlogin = em.unwrap(Session.class).createCriteria(Login.class);
 			crlogin.add(Restrictions.eq("key", node.get("key").asText()));
 			crlogin.add(Restrictions.eq("user", getuser));
-			
+
 			if (!(crlogin.list().isEmpty())) {
-				Login loggeduser=(Login) crlogin.uniqueResult();
+				Login loggeduser = (Login) crlogin.uniqueResult();
 				return loggeduser;
 			} else {
 				User user = new User();
@@ -257,10 +267,10 @@ public class UserController {
 		}
 
 	}
-	
+
 	@PostMapping("/uploadprimage/{id}")
-	public String uploadFile(@PathVariable(value = "id") long userid, 
-			@RequestParam("primage") MultipartFile primage) {
+	public String uploadFile(@PathVariable(value = "id") long userid, @RequestParam("primage") MultipartFile primage)
+			throws IOException {
 		String message1 = "";
 		String message2 = "";
 		User existingUser = this.userRepository.findById(userid)
@@ -286,7 +296,15 @@ public class UserController {
 			this.userRepository.save(existingUser);
 			return "primages/" + userid + "/" + primage.getOriginalFilename();
 		}
-		
+//		System.out.println("Original Image Byte Size - " + primage.getBytes().length);
+//		ImageModel img = new ImageModel();
+//		img.setName(primage.getOriginalFilename());
+//		img.setType(primage.getContentType());
+//		img.setPicByte(compressBytes(primage.getBytes()));
+//		img.setUser(existingUser);
+//		primageRepository.save(img);
+//		img.setPicByte(decompressBytes(img.getPicByte()));
+//		return img;
 	}
 
 	@PutMapping("/{id}")
@@ -388,9 +406,8 @@ public class UserController {
 		this.userRepository.delete(existingUser);
 		return ResponseEntity.ok().build();
 	}
-	
-	
-	void sendEmail(String to,String subject,String text) {
+
+	void sendEmail(String to, String subject, String text) {
 
 		SimpleMailMessage msg = new SimpleMailMessage();
 		msg.setFrom("noreply@emoneytag.com");
@@ -423,5 +440,41 @@ public class UserController {
 			e.printStackTrace();
 		}
 		// ...
+	}
+
+	public static byte[] compressBytes(byte[] data) {
+		Deflater deflater = new Deflater();
+		deflater.setInput(data);
+		deflater.finish();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+		byte[] buffer = new byte[1024];
+		while (!deflater.finished()) {
+			int count = deflater.deflate(buffer);
+			outputStream.write(buffer, 0, count);
+		}
+		try {
+			outputStream.close();
+		} catch (IOException e) {
+		}
+		System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+		return outputStream.toByteArray();
+	}
+
+	// uncompress the image bytes before returning it to the angular application
+	public static byte[] decompressBytes(byte[] data) {
+		Inflater inflater = new Inflater();
+		inflater.setInput(data);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+		byte[] buffer = new byte[1024];
+		try {
+			while (!inflater.finished()) {
+				int count = inflater.inflate(buffer);
+				outputStream.write(buffer, 0, count);
+			}
+			outputStream.close();
+		} catch (IOException ioe) {
+		} catch (DataFormatException e) {
+		}
+		return outputStream.toByteArray();
 	}
 }

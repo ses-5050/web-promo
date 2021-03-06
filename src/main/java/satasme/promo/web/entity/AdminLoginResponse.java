@@ -1,4 +1,4 @@
-package satasme.promo.web.controller;
+package satasme.promo.web.entity;
 
 public class AdminLoginResponse {
 

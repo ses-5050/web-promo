@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
+import Cookies from 'js-cookie';
 
 class Order extends React.Component {
 
@@ -25,15 +26,15 @@ class Order extends React.Component {
     }
 
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
             this.getOrders();
 
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {
@@ -52,7 +53,7 @@ class Order extends React.Component {
     }
 
     getOrders() {
-        fetch("/api/getoprice/allorders/" + sessionStorage.getItem("user"))
+        fetch("/api/getoprice/allorders/" + Cookies.get('user'))
             .then(response => response.json())
             .then(response => this.setState({ orders: response }))
             .catch(error => console.log(error));

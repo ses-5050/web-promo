@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class UserHome extends React.Component {
 
@@ -13,10 +14,10 @@ class UserHome extends React.Component {
         }
 
     }
-    componentDidMount(){
-        var user = sessionStorage.getItem("user");
+    componentDidMount() {
+        var user = Cookies.get('user');
         if (user != null) {
-            
+
         } else {
             this.props.history.push('/login');
         }
@@ -113,8 +114,9 @@ class UserHome extends React.Component {
                     <section class="container header__inner">
 
                         <div class="header__left">
-                            <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} />
-
+                            <a href="/userhome">
+                                <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} alt="Emoneytag" title="Emoneytag"/>
+                            </a>
                             <br />
                         </div>
                         <div class="header__right">
@@ -209,7 +211,7 @@ class UserHome extends React.Component {
                                         </div>
                                         <br /><br /><br />
                                         <div class="wordCarousel " style={{ textAlign: "center" }}>
-                                            <span style={{marginLeft:"150px"}}>Promote</span>
+                                            <span style={{ marginLeft: "150px" }}>Promote</span>
                                             <div >
 
                                                 <ul class="flip4">
@@ -401,7 +403,7 @@ class UserHome extends React.Component {
                             </div>
                         </div>
                     </div>
-                    
+
 
 
                 </main>
@@ -429,8 +431,8 @@ class UserHome extends React.Component {
                                         <option value="Cancel order">Cancel order</option>
                                         <option value="Refill order">Refill order</option>
                                         <option value="Other issues">Other issues</option>
-                                    </select> <input type="text" placeholder="Name" maxlength="50" required="required" class="form__input" />
-                                        <input type="email" placeholder="Email" maxlength="50" required="required" class="form__input" /> <input
+                                    </select> 
+                                        <input
                                             type="text" placeholder="Subject " maxlength="150" required="required" class="form__input" />
 
                                     </div>

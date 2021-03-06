@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import satasme.promo.web.entity.AdminLogin;
+import satasme.promo.web.entity.AdminLoginResponse;
 import satasme.promo.web.entity.Login;
 import satasme.promo.web.entity.User;
 import satasme.promo.web.repository.AdminLoginRepository;

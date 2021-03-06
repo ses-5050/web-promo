@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import toast from 'toast-me';
 import userServices from '../../services/userServices';
 import queryString from 'query-string';
+import Cookies from 'js-cookie';
 
 class VerifyEmail extends React.Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class VerifyEmail extends React.Component {
 	}
 
     componentDidMount() {
-        alert(sessionStorage.getItem("user"))
+        alert(Cookies.get('user'))
         this.verify();
     }
 

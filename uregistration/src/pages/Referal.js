@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import userServices from "../services/userServices";
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 
 class Dash extends React.Component {
@@ -21,7 +22,7 @@ class Dash extends React.Component {
         }
     }
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
             referalService.getUserById(user).then(res => {
 
@@ -30,11 +31,11 @@ class Dash extends React.Component {
 
                 });
             });
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
     
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {

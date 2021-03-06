@@ -48,104 +48,105 @@ class Profile extends React.Component {
 
     componentDidMount() {
         // this.onImageChange = this.onImageChange.bind(this);
-        // var user = sessionStorage.getItem("user");
-alert(Cookies.get('user'))
-        
-        // if (user != null) {
-        //     userServices.getUserById(sessionStorage.getItem("user")).then(res => {
-        //         if (res.data.user != null) {
-        //             if (res.data.user.fname != null) {
-        //                 this.setState({ fname: res.data.user.fname });
-        //             }
-        //             if (res.data.user.lname != null) {
-        //                 this.setState({ lname: res.data.user.lname });
-        //             }
-        //             if (res.data.user.fname != null) {
-        //                 this.setState({ c_fname: res.data.user.fname });
-        //             }
-        //             if (res.data.user.lname != null) {
-        //                 this.setState({ c_lname: res.data.user.lname });
-        //             }
-        //             if (res.data.user.email != null) {
-        //                 this.setState({ email: res.data.user.email });
-        //             }
-        //             if (res.data.user.mobile != null && res.data.user.mobile != 0) {
-        //                 this.setState({ mobile: res.data.user.mobile });
-        //             }
-        //             if (res.data.user.gender != null) {
-        //                 this.setState({ gender: res.data.user.gender });
-        //             }
-        //             if (res.data.user.dob != null) {
-        //                 this.setState({ dob: res.data.user.dob });
-        //             }
-        //             if (res.data.user.specialization != null) {
-        //                 this.setState({ specialization: res.data.user.specialization });
-        //             }
-        //             if (res.data.user.education != null) {
-        //                 this.setState({ education: res.data.user.education });
-        //             }
-        //             if (res.data.user.status == "verified") {
-        //                 this.removeVerifyEmail();
-        //             }
-        //             if (res.data.user.img != null) {
-        //                 this.setState({ profileimage: "http://127.0.0.1:8887/" + res.data.user.img });
-        //             }
-        //         }
-        //         if (res.data.fname != null) {
-        //             this.setState({ fname: res.data.fname });
-        //         }
-        //         if (res.data.lname != null) {
-        //             this.setState({ lname: res.data.lname });
-        //         }
-        //         if (res.data.addresno != null) {
-        //             this.setState({ number: res.data.addresno });
-        //         }
-        //         if (res.data.country != null) {
-        //             this.setState({ country: res.data.country });
-        //         }
-        //         if (res.data.street != null) {
-        //             this.setState({ street: res.data.street });
-        //         }
-        //         if (res.data.city != null) {
-        //             this.setState({ city: res.data.city });
-        //         }
-        //         if (res.data.postal != null) {
-        //             this.setState({ postalcode: res.data.postal });
-        //         }
-        //         if (res.data.currency != null) {
-        //             this.setState({ currency: res.data.currency });
-        //         }
-        //         if (res.data.region != null) {
-        //             this.setState({ stateorregion: res.data.region });
-        //         }
+        var user = Cookies.get('user');
+        if (user != null) {
+            userServices.getUserById(user).then(res => {
+                if (res.data.user != null) {
+                    if (res.data.user.fname != null) {
+                        this.setState({ fname: res.data.user.fname });
+                    }
+                    if (res.data.user.lname != null) {
+                        this.setState({ lname: res.data.user.lname });
+                    }
+                    if (res.data.user.fname != null) {
+                        this.setState({ c_fname: res.data.user.fname });
+                    }
+                    if (res.data.user.lname != null) {
+                        this.setState({ c_lname: res.data.user.lname });
+                    }
+                    if (res.data.user.email != null) {
+                        this.setState({ email: res.data.user.email });
+                    }
+                    if (res.data.user.mobile != null && res.data.user.mobile != 0) {
+                        this.setState({ mobile: res.data.user.mobile });
+                    }
+                    if (res.data.user.gender != null) {
+                        this.setState({ gender: res.data.user.gender });
+                    }
+                    if (res.data.user.dob != null) {
+                        this.setState({ dob: res.data.user.dob });
+                    }
+                    if (res.data.user.specialization != null) {
+                        this.setState({ specialization: res.data.user.specialization });
+                    }
+                    if (res.data.user.education != null) {
+                        this.setState({ education: res.data.user.education });
+                    }
+                    if (res.data.user.status == "verified") {
+                        this.removeVerifyEmail();
+                    }
+                    if (res.data.user.img != null) {
+                        this.setState({ profileimage: "http://127.0.0.1:8887/" + res.data.user.img });
+                    }
+                }
+                if (res.data.fname != null) {
+                    this.setState({ fname: res.data.fname });
+                }
+                if (res.data.lname != null) {
+                    this.setState({ lname: res.data.lname });
+                }
+                if (res.data.addresno != null) {
+                    this.setState({ number: res.data.addresno });
+                }
+                if (res.data.country != null) {
+                    this.setState({ country: res.data.country });
+                }
+                if (res.data.street != null) {
+                    this.setState({ street: res.data.street });
+                }
+                if (res.data.city != null) {
+                    this.setState({ city: res.data.city });
+                }
+                if (res.data.postal != null) {
+                    this.setState({ postalcode: res.data.postal });
+                }
+                if (res.data.currency != null) {
+                    this.setState({ currency: res.data.currency });
+                }
+                if (res.data.region != null) {
+                    this.setState({ stateorregion: res.data.region });
+                }
 
 
-        //         if (this.state.profileimage == "") {
-        //             this.setState({ profileimage: "assets\\images\\icons\\userii.jpg" });
-        //         }
-        //     });
+                if (this.state.profileimage == "") {
+                    this.setState({ profileimage: "assets\\images\\icons\\userii.jpg" });
+                }
+            });
 
-        //     userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
-        //         if (res.data == "compeleted") {
-        //             this.setState({ profilecomplete: 'Your profile is 100% completed' });
-        //         } else {
-        //             this.setState({ profilecomplete: res.data });
-        //         }
-        //     });
-        //     userServices.getEarnedPoints(sessionStorage.getItem("user")).then(res => {
-        //         if (res.data.email != null) {
-        //             this.setState({ premail: res.data.email });
-        //         }
-        //         if (res.data.mobile != null) {
-        //             this.setState({ prmobile: res.data.mobile });
-        //         }
-        //         if (res.data.points != null) {
-        //             this.setState({ prearningtotal: res.data.points });
-        //         }
-        //     });
-        // } else {
-        //     this.props.history.push('/login');
-        // }
+            userServices.getProfileCompletion(user).then(res => {
+                if (res.data == "compeleted") {
+                    this.setState({ profilecomplete: 'Your profile is 100% completed' });
+                } else {
+                    this.setState({ profilecomplete: res.data });
+                }
+            });
+            userServices.getEarnedPoints(user).then(res => {
+                if (res.data.email != null) {
+                    this.setState({ premail: res.data.email });
+                }
+                if (res.data.mobile != null) {
+                    this.setState({ prmobile: res.data.mobile });
+                }
+                if (res.data.points != null) {
+                    this.setState({ prearningtotal: res.data.points });
+                }
+                if (res.data.url != null) {
+                    alert(res.data.url)
+                }
+            });
+        } else {
+            this.props.history.push('/login');
+        }
     }
 
     changeThumbnail = e => {
@@ -153,7 +154,7 @@ alert(Cookies.get('user'))
         this.setState({ thumbnail: e.target.files });
         let upload = { thumbnail: e.target.files }
         console.log('user=>' + JSON.stringify(upload));
-        userServices.uploadProfile(sessionStorage.getItem("user"), e.target.files[0], (event) => {
+        userServices.uploadProfile(Cookies.get('user'), e.target.files[0], (event) => {
             this.setState({
                 progress: Math.round((100 * event.loaded) / event.total),
             });
@@ -183,7 +184,7 @@ alert(Cookies.get('user'))
     //             "myFile",
     //             img
     //         );
-    //         userServices.uploadProfile(sessionStorage.getItem("user"),formData).then(res => {
+    //         userServices.uploadProfile(Cookies.get('user'),formData).then(res => {
     //             console.log('profile', res)
     //         });
     //     }
@@ -204,7 +205,7 @@ alert(Cookies.get('user'))
         e.preventDefault();
         let user = { fname: this.state.c_fname, lname: this.state.c_lname, mobile: parseInt(this.state.mobile) }
         console.log('user=>' + JSON.stringify(user));
-        userServices.updateUser(user, sessionStorage.getItem("user")).then(res => {
+        userServices.updateUser(user, Cookies.get('user')).then(res => {
             toast('Successfully Updated');
             this.props.history.push('/profile');
         });
@@ -213,7 +214,7 @@ alert(Cookies.get('user'))
     changeEmail = () => {
         let user = { email: this.state.email }
         console.log('user=>' + JSON.stringify(user));
-        userServices.updateUser(user, sessionStorage.getItem("user")).then(res => {
+        userServices.updateUser(user, Cookies.get('user')).then(res => {
             toast('Successfully Updated');
             this.props.history.push('/profile');
         });
@@ -224,7 +225,7 @@ alert(Cookies.get('user'))
 
         let user = { p_fname: this.state.fname, p_lname: this.state.lname, p_street: this.state.street, p_number: this.state.number, p_postal: this.state.postalcode, p_city: this.state.city, p_region: this.state.stateorregion, p_country: this.state.country, p_currency: this.state.currency }
         console.log('user=>' + JSON.stringify(user));
-        userServices.updateUser(user, sessionStorage.getItem("user")).then(res => {
+        userServices.updateUser(user, Cookies.get('user')).then(res => {
             toast('Successfully Updated');
             this.props.history.push('/profile');
         });
@@ -233,7 +234,7 @@ alert(Cookies.get('user'))
     basicInfo = (e) => {
         let user = { country: this.state.basiccountry, gender: this.state.gender, dob: this.state.dob }
         console.log('user=>' + JSON.stringify(user));
-        userServices.updateUser(user, sessionStorage.getItem("user")).then(res => {
+        userServices.updateUser(user, Cookies.get('user')).then(res => {
             toast('Successfully Updated');
             this.props.history.push('/profile');
         });
@@ -242,7 +243,7 @@ alert(Cookies.get('user'))
     experience = (e) => {
         let user = { specialization: this.state.specialization, education: this.state.education }
         console.log('user=>' + JSON.stringify(user));
-        userServices.updateUser(user, sessionStorage.getItem("user")).then(res => {
+        userServices.updateUser(user, Cookies.get('user')).then(res => {
             toast('Successfully Updated');
             this.props.history.push('/profile');
         });
@@ -255,7 +256,7 @@ alert(Cookies.get('user'))
 
 
     sendEmail = (e) => {
-        userServices.sendVerificationEmail(sessionStorage.getItem("user")).then(res => {
+        userServices.sendVerificationEmail(Cookies.get('user')).then(res => {
             if (res.data === "success") {
                 toast('Email sent. Check your inbox');
             } else {
@@ -378,8 +379,9 @@ alert(Cookies.get('user'))
                             <section class="container header__inner">
 
                                 <div class="header__left">
-                                    <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} />
-
+                                    <a href="/userhome">
+                                        <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} alt="Emoneytag" title="Emoneytag" />
+                                    </a>
                                     <br />
                                 </div>
                                 <div class="header__right">
@@ -391,12 +393,12 @@ alert(Cookies.get('user'))
                                     <div class="accounticon">
                                         <a href="/dash">  Dashboard&nbsp; </a>
                                     </div>
-                                    <Link to="/profile" >
+                                    <a href="/profile" >
                                         <div class="accounticon">
                                             <button type="button" class="btn btn-link btn-lg">
                                                 <i class="fa fa-user-circle-o"></i></button>
                                         </div>
-                                    </Link>
+                                    </a>
 
 
 

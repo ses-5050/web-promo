@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import userServices from "../services/userServices";
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class TwitterFollow extends React.Component {
 
@@ -24,7 +25,7 @@ class TwitterFollow extends React.Component {
         }
     }
     getpageData() {
-        socialmedia.getFacebookPageLike(sessionStorage.getItem("user"), "Twitter Followers")
+        socialmedia.getFacebookPageLike(Cookies.get('user'), "Twitter Followers")
             .then(res => {
                 this.setState({ url: res.data });
             });
@@ -32,9 +33,9 @@ class TwitterFollow extends React.Component {
 
     componentDidMount() {
         // window.location.reload();
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
-            userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
+            userServices.getProfileCompletion(Cookies.get('user')).then(res => {
                 if (res.data == "compeleted") {
                     this.setState({ earnstatus: '' });
                     this.getpageData();
@@ -43,11 +44,11 @@ class TwitterFollow extends React.Component {
                 }
             });
 
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {
@@ -57,7 +58,7 @@ class TwitterFollow extends React.Component {
     }
 
     handleClick = (urlS) => {
-        let fblike = { userid: sessionStorage.getItem("user"), service: "Twitter Followers", orderid: urlS.id }
+        let fblike = { userid: Cookies.get('user'), service: "Twitter Followers", orderid: urlS.id }
 
 
         socialmedia.addFacebookLike(fblike)

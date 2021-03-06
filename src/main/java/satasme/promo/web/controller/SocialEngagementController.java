@@ -56,13 +56,16 @@ public class SocialEngagementController {
 		String service = node.get("service").asText();
 		String userid = node.get("userid").asText();
 		String orderid = node.get("orderid").asText();
+		
 		Criteria cr1 = em.unwrap(Session.class).createCriteria(User.class);
 		cr1.add(Restrictions.eq("id", Long.valueOf(userid)));
 		User user = (User) cr1.uniqueResult();
+		
 		Criteria cr2 = em.unwrap(Session.class).createCriteria(Orders.class);
 		cr2.add(Restrictions.eq("id", orderid));
 		Orders order = (Orders) cr2.uniqueResult();
 		String crrdate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
 		Criteria cr = em.unwrap(Session.class).createCriteria(Points.class);
 		cr.add(Restrictions.eq("pointSource", service));
 		Points points = (Points) cr.uniqueResult();

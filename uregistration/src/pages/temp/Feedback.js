@@ -7,15 +7,59 @@ import $ from "jquery";
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import Sidebar from '../../components/Sidebar';
+import feedbackService from '../../services/feedbackService';
 
 class Feedback extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+
+
+      feedbacks: [],
+      message:""
+
+    }
+  }
+
   componentDidMount() {
+    //initialize datatable
+    feedbackService.getFeedbacks().then(res => {
+
+      this.setState({ feedbacks: res.data });
+
+    });
+  }
+
+  componentDidUpdate() {
     //initialize datatable
     $(document).ready(function () {
       $("#example").DataTable();
-      $("#example2").DataTable();
     });
+
   }
+
+  changeMessage = (e) => {
+    this.setState({ message: e.target.value });
+  };
+  
+
+  SendFeedbackResponse (data) {
+    let details = { feedid: data.id, message: this.state.message }
+    feedbackService.SendFeedbackResponse(details).then(res => {
+      if (res.status === 200 && res.statusText === 'OK') {
+        if (res.data == "success") {
+           feedbackService.getFeedbacks().then(res => {
+
+            this.setState({ feedbacks: res.data });
+      
+          });
+        }
+
+      }
+    });
+  };
+
   render() {
 
     return (
@@ -135,21 +179,36 @@ class Feedback extends React.Component {
                         <table id="example" class="display">
                           <thead>
                             <tr>
-                              <th>Name</th>
-                              <th>Email</th>
+                              {/* <th>Name</th>
+                              <th>Email</th> */}
                               <th>Subject</th>
                               <th>Question Type</th>
-                              <th>View</th>
                               <th>Date</th>
+                              <th>View</th>
 
                             </tr>
                           </thead>
                           <tbody>
 
+                            {this.state.feedbacks.map((data) => {
+                              return (
+                                <tr>
+                                  <td>{data.subject}</td>
+                                  <td>{data.qtype}</td>
+                                  <td>{data.date}</td>
+                                  <td>
+                                    <i
+                                      class="ti-eye"
+                                      data-toggle="modal"
+                                      data-target={"#" + data.id}
+                                    ></i>
+                                  </td>
+                                </tr>
+                              );
+                            })}
 
 
-
-                            <tr>
+                            {/* <tr>
                               <td>Praveen</td>
                               <td>Praveen@gmail.com</td>
                               <td>Youtube Views</td>
@@ -162,7 +221,7 @@ class Feedback extends React.Component {
                                 ></i>
                               </td>
                               <td>2020-10-12</td>
-                            </tr>
+                            </tr> */}
 
 
 
@@ -177,38 +236,37 @@ class Feedback extends React.Component {
                     {/* Vertically centered modal start */}
                     <div className="col-lg-6 mt-5">
                       {/* Modal */}
-                      <div className="modal fade" id="exampleModalLong">
-                        <div className="modal-dialog modal-dialog-centered" role="document">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5 className="modal-title">Feedback</h5>
-                              <button type="button" className="close" data-dismiss="modal"><span>×</span></button>
-                            </div>
-                            <div className="modal-body">
-                              <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                              industry.
-                              Lorem Ipsum has been the industry's standard dummy text ever since
-                              the 1500s,
-                              when an unknown printer took a galley of type and scrambled it to
-                              make a type specimen book.
-                                  </p>
-                              <br />
-                              <div className="row">
-                                <div className="col-sm">
-                                  <label htmlFor="lname">Reply : </label><br />
-                                  <textarea id="w3review" name="w3review" rows={4} cols={50} style={{border:"solid 2px"}}/>
+                      {this.state.feedbacks.map((data) => {
+                        return (
+                          <div className="modal fade" id={data.id}>
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5 className="modal-title">Feedback</h5>
+                                  <button type="button" className="close" data-dismiss="modal"><span>×</span></button>
+                                </div>
+                                <div className="modal-body">
+                                  <p>{data.message}</p>
+                                  <br />
+                                  <div className="row">
+                                    <div className="col-sm">
+                                      <label htmlFor="lname">Reply : </label><br />
+                                      <textarea id="w3review" name="w3review" rows={4} cols={50} style={{ border: "solid 2px" }} value={this.state.message} onChange={this.changeMessage}/>
+                                    </div>
+                                    <div className="modal-footer">
+                                      <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => this.SendFeedbackResponse({ id: data.id})} >Send</button>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div className="modal-footer">
-                                  <button type="button" className="btn btn-primary" data-dismiss="modal">Send</button>
+                                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                               </div>
                             </div>
-                            <div className="modal-footer">
-                              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
                           </div>
-                        </div>
-                      </div>
+
+                        );
+                      })}
                     </div>
                     {/* Vertically centered modal end */}
                   </div>

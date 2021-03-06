@@ -9,6 +9,7 @@ import socialmedia from "../services/socialmedia";
 import { Link } from 'react-router-dom';
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class FBPostShare extends React.Component {
     constructor(props) {
@@ -96,9 +97,9 @@ class FBPostShare extends React.Component {
     // }
 
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
-            userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
+            userServices.getProfileCompletion(Cookies.get('user')).then(res => {
                 if (res.data == "compeleted") {
                     this.setState({ earnstatus: '' });
                     this.getpageData();
@@ -110,11 +111,11 @@ class FBPostShare extends React.Component {
                 this.setState({ url: res.data });
             });
 
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {

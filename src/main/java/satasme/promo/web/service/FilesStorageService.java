@@ -15,7 +15,7 @@ public interface FilesStorageService {
 
 	public Resource load(String filename,String userid,String uploadid);
 
-	public Resource loadProfile(String filename,String userid);
+	public Resource loadProfile(String filename);
 
 	public void deleteAll();
 

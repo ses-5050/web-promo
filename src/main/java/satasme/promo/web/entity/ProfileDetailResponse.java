@@ -41,4 +41,5 @@ public class ProfileDetailResponse {
 		this.points = points;
 	}
 	
+	
 }

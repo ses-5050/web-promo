@@ -6,6 +6,7 @@ import toast from 'toast-me';
 import { Link } from 'react-router-dom';
 import { Style } from "react-style-tag";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 
 
@@ -28,7 +29,7 @@ class UploadVideo extends React.Component {
   }
 
   componentDidMount() {
-    var user = sessionStorage.getItem("user");
+    var user = Cookies.get('user');
     if (user != null) {
 
     } else {
@@ -105,7 +106,7 @@ class UploadVideo extends React.Component {
       });
       let upload = { category: this.state.category, name: this.state.name, hashtag: this.state.hashtag, duration: this.state.timeduration, thumbnail: this.state.thumbnail[0], video: this.state.video[0] }
       console.log('user=>' + JSON.stringify(upload));
-      uploadVideoService.upload(sessionStorage.getItem("user"), this.state.category, this.state.name, this.state.timeduration, this.state.hashtag, this.state.thumbnail[0], this.state.video[0], (event) => {
+      uploadVideoService.upload(Cookies.get('user'), this.state.category, this.state.name, this.state.timeduration, this.state.hashtag, this.state.thumbnail[0], this.state.video[0], (event) => {
         this.setState({
           progress: Math.round((100 * event.loaded) / event.total),
         });

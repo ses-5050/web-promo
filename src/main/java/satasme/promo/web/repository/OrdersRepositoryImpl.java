@@ -395,7 +395,7 @@ public class OrdersRepositoryImpl implements OrdersRepositoryCustom {
 			LocalDate yesterday = LocalDate.now().minusDays(1);
 			Criteria crpk = em.unwrap(Session.class).createCriteria(UserPoints.class);
 			crpk.add(Restrictions.eq("user", crruser.get()));
-			crpk.add(Restrictions.between("date", String.valueOf(yesterday), crrdate));
+			crpk.add(Restrictions.eq("date", yesterday));
 			crpk.add(Restrictions.eq("status", "Active"));
 			if (crpk.list().isEmpty()) {
 				return "0";

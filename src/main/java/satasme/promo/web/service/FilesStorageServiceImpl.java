@@ -100,12 +100,13 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 	}
 	
 	@Override
-	public Resource loadProfile(String filename,String userid) {
+	public Resource loadProfile(String filename) {
 		try {
-			Path userroot=Paths.get("primages/"+userid+"/"+filename);
-			Path file = root.resolve(filename);
+			Path userroot=Paths.get("primages");
+			String[] split = filename.split("primages/");
+			String fileurl = split[1];
+			Path file = userroot.resolve(fileurl);
 			Resource resource = new UrlResource(file.toUri());
-
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
 			} else {

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import adminServices from '../../services/adminServices';
 import toast from 'toast-me';
+import Cookies from 'js-cookie';
 
 class AdminLogin extends React.Component {
 
@@ -17,12 +18,12 @@ class AdminLogin extends React.Component {
     }
   }
 
-  componentDidMount(){
-    var user = sessionStorage.getItem("admin");
-        if (user != null) {
-            this.props.history.push('/admin/admindash');
-        } else {
-        }
+  componentDidMount() {
+    var user = Cookies.get('admin');
+    if (user != null) {
+      this.props.history.push('/admin/admindash');
+    } else {
+    }
   }
 
   userSignin = (e) => {
@@ -36,7 +37,14 @@ class AdminLogin extends React.Component {
       let user = { email: this.state.email, pw: this.state.pw, }
       adminServices.logIn(user).then(res => {
         if (res.data !== 'failed') {
-          sessionStorage.setItem("admin", res.data)
+          // sessionStorage.setItem("admin", res.data)
+          var inFifteenMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
+          Cookies.set('admin', res.data.adminid, {
+            expires: inFifteenMinutes
+          });
+          Cookies.set('role', res.data.role, {
+            expires: inFifteenMinutes
+          });
           this.props.history.push('/admin/admindash');
         } else {
           toast('Email or Password invalid!');

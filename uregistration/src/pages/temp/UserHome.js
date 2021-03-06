@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
+import feedbackService from "../../services/feedbackService";
 
 
 class UserHome extends React.Component {
@@ -8,7 +10,19 @@ class UserHome extends React.Component {
     super(props);
     this.state = {
       username: "",
+      subject: "",
+      message: "",
+      qtype: ""
     };
+  }
+
+  componentDidMount() {
+    var user = Cookies.get('user');
+    if (user != null) {
+
+    } else {
+      this.props.history.push('/login');
+    }
   }
 
   redirectToHomebl = (e) => {
@@ -25,6 +39,35 @@ class UserHome extends React.Component {
 
   redirectCreateorder = (e) => {
     this.props.history.push("/createorder");
+  };
+
+  sendUserFeedback = (e) => {
+    e.preventDefault();
+    let details = { qtype: this.state.qtype, subject: this.state.subject, message: this.state.message }
+    feedbackService.SaveFeedback(Cookies.get('user'), details).then(res => {
+      if (res.status === 200 && res.statusText === 'OK') {
+        if (res.data == "success") {
+          this.setState({
+            qtype: "I have a question",
+            subject: "",
+            message: ""
+          });
+        }
+
+      }
+    });
+  };
+
+  changeQtype = (e) => {
+    this.setState({ qtype: e.target.value });
+  };
+
+  changeSubject = (e) => {
+    this.setState({ subject: e.target.value });
+  };
+
+  changeMessage = (e) => {
+    this.setState({ message: e.target.value });
   };
 
   render() {
@@ -91,7 +134,7 @@ class UserHome extends React.Component {
           <link rel="stylesheet" href="/assets/assets/css/Footer-Dark.css" />
           <link rel="stylesheet" href="/assets/assets/css/styles.css"></link>
           <script src="/assets/home-js.js"></script>
-          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet"/>
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
         </Helmet>
         <header
           class="header"
@@ -118,11 +161,9 @@ class UserHome extends React.Component {
                                 <a href="#">   Contact us </a>&nbsp;&nbsp;&nbsp;&nbsp;
                             </div> */}
               {/* </Link> */}
-              <Link to="/createorder">
-                <div class="accounticon">
-                  <a href=""> Dashboard&nbsp; </a>
-                </div>
-              </Link>
+              <div class="accounticon">
+                <a href="/dash">  Dashboard&nbsp; </a>
+              </div>
               <Link to="/profile">
                 <div class="accounticon">
                   <button type="button" class="btn btn-link btn-lg">
@@ -245,7 +286,7 @@ class UserHome extends React.Component {
               <br />
               <div class="wordCarousel " style={{ textAlign: "center" }}>
                 <span>Promote</span>
-                <div style={{justifyContent:"center",alignItems:"center"}}>
+                <div style={{ justifyContent: "center", alignItems: "center" }}>
                   <ul class="flip4">
                     <li style={{ color: "#E1306C" }}>Instagram </li>
                     <li style={{ color: "#4267B2" }}>Facebook</li>
@@ -798,9 +839,9 @@ class UserHome extends React.Component {
             </div>
             <div class="contacts">
               <div class="contacts__form">
-                <form action="" class="form">
+                <form class="form" onSubmit={this.sendUserFeedback}>
                   <div class="form__left">
-                    <select type="text" placeholder="Name" class="form__input">
+                    <select type="text" placeholder="Name" value={this.state.qtype} onChange={this.changeQtype} class="form__input">
                       <option value="" selected="selected">
                         I have a question
                       </option>
@@ -810,22 +851,10 @@ class UserHome extends React.Component {
                     </select>{" "}
                     <input
                       type="text"
-                      placeholder="Name"
-                      maxlength="50"
-                      required="required"
-                      class="form__input"
-                    />
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      maxlength="50"
-                      required="required"
-                      class="form__input"
-                    />{" "}
-                    <input
-                      type="text"
+                      value={this.state.subject}
                       placeholder="Subject "
                       maxlength="150"
+                      onChange={this.changeSubject}
                       required="required"
                       class="form__input"
                     />
@@ -833,6 +862,8 @@ class UserHome extends React.Component {
                   <div class="form__right">
                     <textarea
                       placeholder="Message"
+                      value={this.state.message}
+                      onChange={this.changeMessage}
                       maxlength="1500"
                       required="required"
                       class="form__textarea form__textarea--margin-top"
@@ -842,7 +873,7 @@ class UserHome extends React.Component {
                     <div id="captcha"></div>
                   </div>
 
-                  <button type="button" class="btn btn-dark">
+                  <button type="button" class="btn btn-dark" type="submit">
                     SUBMIT
                   </button>
 

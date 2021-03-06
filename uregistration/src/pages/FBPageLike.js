@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import userServices from "../services/userServices";
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class FBPageLike extends React.Component {
 
@@ -30,7 +31,7 @@ class FBPageLike extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
     getpageData() {
-        socialmedia.getFacebookPageLike(sessionStorage.getItem("user"), "Facebook Page Like")
+        socialmedia.getFacebookPageLike(Cookies.get('user'), "Facebook Page Like")
             .then(res => {
                 console.log("response=", JSON.stringify(res.data))
                 this.setState({ url: res.data });
@@ -40,9 +41,9 @@ class FBPageLike extends React.Component {
 
     componentDidMount() {
         // window.location.reload();
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
-            userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
+            userServices.getProfileCompletion(Cookies.get('user')).then(res => {
                 if (res.data == "compeleted") {
                     this.setState({ earnstatus: '' });
                     this.getpageData();
@@ -51,11 +52,11 @@ class FBPageLike extends React.Component {
                 }
             });
 
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {
@@ -65,7 +66,7 @@ class FBPageLike extends React.Component {
     }
     handleClick(urlS) {
 
-        let fblike = { userid: sessionStorage.getItem("user"), service: "Facebook Page Like", orderid: urlS.id }
+        let fblike = { userid: Cookies.get('user'), service: "Facebook Page Like", orderid: urlS.id }
 
 
         socialmedia.addFacebookLike(fblike)

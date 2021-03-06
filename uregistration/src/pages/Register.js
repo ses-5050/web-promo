@@ -12,6 +12,7 @@ import userServices from '../services/userServices';
 import SessionKeystore from 'session-keystore'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import queryString from 'query-string';
+import Cookies from 'js-cookie';
 
 
 const CLIENT_ID = '613851969001-bakoc12jk787o0k34plimm6cq1tsklra.apps.googleusercontent.com';
@@ -147,7 +148,7 @@ class Register extends React.Component {
 	}
 
 	componentDidMount() {
-		var user = sessionStorage.getItem("user");
+		var user = Cookies.get('user');
 		if (user != null) {
 			this.props.history.push('/userhome');
 		} else {

@@ -53,7 +53,10 @@ class Login extends React.Component {
             userServices.logIn(user).then(res => {
                 if (res.data !== 'failed') {
                     // sessionStorage.setItem("user", res.data)
-                    Cookies.set('user', res.data, { secure: true });
+                    var inFifteenMinutes = new Date(new Date().getTime() + 2 * 60 * 60 * 1000);
+                    Cookies.set('user', res.data, {
+                        expires: inFifteenMinutes
+                    });
                     this.props.history.push('/userhome');
                 } else {
                     toast('Email or Password invalid!');
@@ -63,7 +66,7 @@ class Login extends React.Component {
 
     }
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
             this.props.history.push('/userhome');
         } else {
@@ -159,6 +162,10 @@ class Login extends React.Component {
                 if (res.data.id !== null) {
                     // sessionStorage.setItem("user", res.data.user.id)
                     Cookies.set('user', res.data.user.id);
+                    var inFifteenMinutes = new Date(new Date().getTime() + 2 * 60 * 60 * 1000);
+                    Cookies.set('user', res.data.user.id, {
+                        expires: inFifteenMinutes
+                    });
                     this.props.history.push('/userhome');
                 } else {
                     toast('Server maybe offline. Try again later!');

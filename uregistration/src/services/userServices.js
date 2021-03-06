@@ -39,6 +39,7 @@ class userServices{
     VerifyEmail(ref){
         return axios.post(USER_API_BASE_URL+'/'+ref+'/verifyemail');
     }
+    
 
     updateUser(user,userId){
         return axios.put(USER_API_BASE_URL+'/'+userId,user);
@@ -65,6 +66,10 @@ class userServices{
 
     getEarnedPoints(userId){
         return axios.get(PROFILE_API_BASE_URL+'/detail/'+userId);
+    }
+
+    getProfileImage(userId){
+        return axios.get(PROFILE_API_BASE_URL+'/profileimage/'+userId);
     }
     
 }

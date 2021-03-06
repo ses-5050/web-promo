@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 
 class Earnreferal extends React.Component {
@@ -23,42 +24,74 @@ class Earnreferal extends React.Component {
           <link rel="stylesheet" href="/assets/css/Team-Boxed.css" />
           <link rel="stylesheet" href="/assets/css/Article-List.css" />
         </Helmet>
-        <header
-          class="header"
-          style={{ backgroundColor: "white", height: "10%", width: "100%" }}
-        >
-          <section class="container header__inner">
-            <Link to="/howitworks1">
-              <a class="action">
-                <i
-                  class="fa fa-arrow-circle-left"
-                  style={{ fontSize: "34px", paddingTop: "5px" }}
-                ></i>
-              </a>
-            </Link>
-            &emsp;&emsp;
-            <div class="header__left">
-              <a href="/howitworks" class="nav__link pricing__link text_violet">
-                <div style={{ paddingTop: "14px" }}> How it Works </div>
-              </a>
-            </div>
-            <div class="header__right">
-              <a href="/register" class="button-register button_yellow ">
-                Registration
-              </a>
-              <a href="/login" class="button-enter button_yellow ">
-                <div class="button-enter__text">
-                  <span>Login</span>
+        {(() => {
+          if (Cookies.get('user') == null) {
+            <header class="header" style={{ backgroundColor: "white", height: "10%", width: "100%" }}>
+
+              <section class="container header__inner" >
+                <div class="header__left" >
+
+                  <a href="/howitworks" class="nav__link pricing__link text_violet" >
+                    How it Works
+                            </a>
                 </div>
-                <img
-                  class="button-enter__icon"
-                  src="assets/Image/earn/user.svg"
-                  alt=""
-                ></img>
-              </a>
-            </div>
-          </section>
-        </header>
+                <div class="header__right">
+                  <a href="/register" class="button-register button_yellow ">
+                    Registration
+                            </a>
+                  <a href="/login" class="button-enter button_yellow ">
+                    <div class="button-enter__text">
+                      <span>Login</span>
+                    </div>
+                    <img class="button-enter__icon" src="assets/Image/earn/user.svg" alt=""></img>
+                  </a>
+                </div>
+              </section>
+
+            </header>
+          } else {
+            return (
+              <header class="header" style={{ padding: "0 20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 4px rgba(0,0,0,.05)" }}>
+
+                <section class="container header__inner">
+                  <a class="action" href="/howitworks1">
+                    <i
+                      class="fa fa-arrow-circle-left"
+                      style={{ fontSize: "34px", paddingTop: "5px" }}
+                    ></i>
+                  </a>
+                                    &emsp;&emsp;
+                                    <div class="header__left">
+                    <a href="/userhome">
+                      <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} alt="Emoneytag" title="Emoneytag" />
+                    </a>
+                    <br />
+                  </div>
+                  <div class="header__right">
+                    {/* <Link to="/profile" > */}
+                    {/* <div class="accounticon">
+                                        <a href="#">   Contact us </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div> */}
+                    {/* </Link> */}
+                    <div class="accounticon">
+                      <a href="/dash">  Dashboard&nbsp; </a>
+                    </div>
+                    <a href="/profile" >
+                      <div class="accounticon">
+                        <button type="button" class="btn btn-link btn-lg">
+                          <i class="fa fa-user-circle-o"></i></button>
+                      </div>
+                    </a>
+
+
+
+                  </div>
+                </section>
+
+              </header>
+            )
+          }
+        })()}
         <div class="article-list" style={{ width: "100%", height: "100% " }}>
           <div class="container">
             <div class="intro">

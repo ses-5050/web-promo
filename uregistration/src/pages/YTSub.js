@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import userServices from "../services/userServices";
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class YTSub extends React.Component {
 
@@ -27,17 +28,17 @@ class YTSub extends React.Component {
         // window.location.reload();
         this.getpageData();
 
-        earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+        earningService.getTotalEarning(Cookies.get('user')).then(res => {
             this.setState({ total_earning: res.data });
         });
 
-        userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+        userServices.getUserById(Cookies.get('user')).then(res => {
             this.setState({ username: res.data.fname });
         });
     }
 
     handleClick(urlS) {
-        let fblike = { userid: sessionStorage.getItem("user"), service: "Youtube Subscribe", orderid: urlS.id }
+        let fblike = { userid: Cookies.get('user'), service: "Youtube Subscribe", orderid: urlS.id }
 
 
         socialmedia.addFacebookLike(fblike)
@@ -59,7 +60,7 @@ class YTSub extends React.Component {
     }
 
     getpageData() {
-        socialmedia.getFacebookPageLike(sessionStorage.getItem("user"), "Youtube Subscribe")
+        socialmedia.getFacebookPageLike(Cookies.get('user'), "Youtube Subscribe")
             .then(res => {
                 this.setState({ url: res.data });
             });

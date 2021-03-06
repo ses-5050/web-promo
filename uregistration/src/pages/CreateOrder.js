@@ -9,6 +9,7 @@ import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
 import { PayPalButton } from "react-paypal-button-v2";
 import $ from 'jquery'
+import Cookies from 'js-cookie';
 
 import toast from 'toast-me';
 
@@ -82,18 +83,18 @@ class Dash extends React.Component {
     }
 
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
             orderService.getMinMax().then(res => {
                 this.setState({ packageMinMax: res.data });
                 this.loadPackages();
             });
 
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
             this.generateYoutubePrice(1600, "views");
@@ -237,7 +238,7 @@ class Dash extends React.Component {
                 var count = this.state.y_views + "," + val;
             }
 
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (y_v_check.checked) {
@@ -245,14 +246,14 @@ class Dash extends React.Component {
             var social = "youtube";
             var service = "views"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (y_s_check.checked) {
             var social = "youtube";
             var service = "subscribers"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else {
@@ -275,7 +276,7 @@ class Dash extends React.Component {
                 var count = this.state.f_Palikes + "," + this.state.f_Polikes + ',' + val;
             }
 
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (f_pal_check.checked && f_pol_check.checked) {
@@ -287,7 +288,7 @@ class Dash extends React.Component {
                 var count = this.state.f_Palikes + ',' + val;
             }
 
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (f_pal_check.checked && f_s_check.checked) {
@@ -300,7 +301,7 @@ class Dash extends React.Component {
             } else {
                 var count = this.state.f_Palikes + ',' + val;
             }
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (f_pol_check.checked && f_s_check.checked) {
@@ -311,28 +312,28 @@ class Dash extends React.Component {
             } else {
                 var count = this.state.f_Polikes + ',' + val;
             }
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (f_pal_check.checked) {
             var social = "facebook";
             var service = "page like"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (f_pol_check.checked) {
             var social = "facebook";
             var service = "post like"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else if (f_s_check.checked) {
             var social = "facebook";
             var service = "share"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else {
@@ -363,7 +364,7 @@ class Dash extends React.Component {
             var social = "instagram";
             var service = "followers"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else {
@@ -378,7 +379,7 @@ class Dash extends React.Component {
             var social = "twitter";
             var service = "followers"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else {
@@ -393,7 +394,7 @@ class Dash extends React.Component {
             var social = "tiktok";
             var service = "followers"
             var count = val;
-            orderService.getprices(social, service, count, sessionStorage.getItem("user")).then(res => {
+            orderService.getprices(social, service, count, Cookies.get('user')).then(res => {
                 this.setState({ total_price: res.data, final_earning: res.data.split("$ ")[1] });
             });
         } else {
@@ -945,7 +946,7 @@ class Dash extends React.Component {
                 sgender = "female";
             }
             if (y_v_check.checked && y_s_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: vresult + ',' + sresult, social: 'youtube', agegroup: vagegroup + ',' + sagegroup, gender: vgender + ',' + sgender, link: this.state.youtube_link, cost: this.state.final_earning, service: 'views,subscribers', count: this.state.y_views + "," + this.state.y_subscribe }
+                let orderdetails = { user: Cookies.get('user'), country: vresult + ',' + sresult, social: 'youtube', agegroup: vagegroup + ',' + sagegroup, gender: vgender + ',' + sgender, link: this.state.youtube_link, cost: this.state.final_earning, service: 'views,subscribers', count: this.state.y_views + "," + this.state.y_subscribe }
                 console.log(JSON.stringify(orderdetails))
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -956,7 +957,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (y_v_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: vresult + '', social: 'youtube', agegroup: vagegroup, gender: vgender, link: this.state.youtube_link, cost: this.state.final_earning, service: 'views', count: this.state.y_views }
+                let orderdetails = { user: Cookies.get('user'), country: vresult + '', social: 'youtube', agegroup: vagegroup, gender: vgender, link: this.state.youtube_link, cost: this.state.final_earning, service: 'views', count: this.state.y_views }
                 console.log("orderrr-> " + JSON.stringify(orderdetails))
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -967,7 +968,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (y_s_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: sresult + '', social: 'youtube', agegroup: sagegroup, gender: sgender, link: this.state.youtube_link, cost: this.state.final_earning, service: 'subscribers', count: this.state.y_subscribe }
+                let orderdetails = { user: Cookies.get('user'), country: sresult + '', social: 'youtube', agegroup: sagegroup, gender: sgender, link: this.state.youtube_link, cost: this.state.final_earning, service: 'subscribers', count: this.state.y_subscribe }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1063,7 +1064,7 @@ class Dash extends React.Component {
             }
 
             if (f_pol_check.checked && f_pal_check.checked && f_s_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: polresult + ',' + palresult + ',' + sresult, social: 'facebook', agegroup: polagegroup + ',' + palagegroup + ',' + sagegroup, gender: polgender + ',' + palgender + ',' + sgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes,page likes,shares', count: this.state.f_Polikes + "," + this.state.f_Palikes + ',' + this.state.f_shares }
+                let orderdetails = { user: Cookies.get('user'), country: polresult + ',' + palresult + ',' + sresult, social: 'facebook', agegroup: polagegroup + ',' + palagegroup + ',' + sagegroup, gender: polgender + ',' + palgender + ',' + sgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes,page likes,shares', count: this.state.f_Polikes + "," + this.state.f_Palikes + ',' + this.state.f_shares }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1074,7 +1075,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (f_pol_check.checked && f_pal_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: polresult + ',' + palresult, social: 'facebook', agegroup: polagegroup + ',' + palagegroup, gender: polgender + ',' + palgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes,page likes', count: this.state.f_Polikes + "," + this.state.f_Palikes }
+                let orderdetails = { user: Cookies.get('user'), country: polresult + ',' + palresult, social: 'facebook', agegroup: polagegroup + ',' + palagegroup, gender: polgender + ',' + palgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes,page likes', count: this.state.f_Polikes + "," + this.state.f_Palikes }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1085,7 +1086,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (f_pol_check.checked && f_s_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: polresult + ',' + sresult, social: 'facebook', agegroup: polagegroup + ',' + sagegroup, gender: polgender + ',' + sgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes,shares', count: this.state.f_Polikes + "," + this.state.f_shares }
+                let orderdetails = { user: Cookies.get('user'), country: polresult + ',' + sresult, social: 'facebook', agegroup: polagegroup + ',' + sagegroup, gender: polgender + ',' + sgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes,shares', count: this.state.f_Polikes + "," + this.state.f_shares }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1096,7 +1097,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (f_pal_check.checked && f_s_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: palresult + ',' + sresult, social: 'facebook', agegroup: palagegroup + ',' + sagegroup, gender: palgender + ',' + sgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'page likes,shares', count: this.state.f_Palikes + "," + this.state.f_shares }
+                let orderdetails = { user: Cookies.get('user'), country: palresult + ',' + sresult, social: 'facebook', agegroup: palagegroup + ',' + sagegroup, gender: palgender + ',' + sgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'page likes,shares', count: this.state.f_Palikes + "," + this.state.f_shares }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1107,7 +1108,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (f_pol_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: polresult, social: 'facebook', agegroup: polagegroup, gender: polgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes', count: this.state.f_Polikes }
+                let orderdetails = { user: Cookies.get('user'), country: polresult, social: 'facebook', agegroup: polagegroup, gender: polgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'post likes', count: this.state.f_Polikes }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1118,7 +1119,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (f_pal_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: palresult, social: 'facebook', agegroup: palagegroup, gender: palgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'page likes', count: this.state.f_Palikes }
+                let orderdetails = { user: Cookies.get('user'), country: palresult, social: 'facebook', agegroup: palagegroup, gender: palgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'page likes', count: this.state.f_Palikes }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1129,7 +1130,7 @@ class Dash extends React.Component {
                     }
                 });
             } else if (f_s_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: sresult, social: 'facebook', agegroup: palagegroup, gender: palgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'shares', count: this.state.f_Palikes }
+                let orderdetails = { user: Cookies.get('user'), country: sresult, social: 'facebook', agegroup: palagegroup, gender: palgender, link: this.state.facebook_link, cost: this.state.final_earning, service: 'shares', count: this.state.f_Palikes }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1177,7 +1178,7 @@ class Dash extends React.Component {
             // }
 
             // if (i_f_check.checked && i_l_check.checked) {
-            //     let orderdetails = { user: sessionStorage.getItem("user"), country: fcountry + ',' + lcountry, social: 'instagram', agegroup: fagegroup + ',' + lagegroup, gender: fgender + ',' + lgender, link: this.state.youtube_link, cost: 50.00, service: 'followers,likes', count: this.state.i_followers + "," + this.state.i_likes }
+            //     let orderdetails = { user: Cookies.get('user'), country: fcountry + ',' + lcountry, social: 'instagram', agegroup: fagegroup + ',' + lagegroup, gender: fgender + ',' + lgender, link: this.state.youtube_link, cost: 50.00, service: 'followers,likes', count: this.state.i_followers + "," + this.state.i_likes }
 
             //     orderService.saveorder(orderdetails).then(res => {
             //         if (res.status === 200 && res.statusText === 'OK') {
@@ -1188,7 +1189,7 @@ class Dash extends React.Component {
             //     });
             // } else 
             if (i_f_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: fresult, social: 'instagram', agegroup: fagegroup, gender: fgender, link: this.state.insta_link, cost: this.state.final_earning, service: 'followers', count: this.state.i_followers }
+                let orderdetails = { user: Cookies.get('user'), country: fresult, social: 'instagram', agegroup: fagegroup, gender: fgender, link: this.state.insta_link, cost: this.state.final_earning, service: 'followers', count: this.state.i_followers }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1200,7 +1201,7 @@ class Dash extends React.Component {
                 });
             }
             // else if (i_l_check.checked) {
-            //     let orderdetails = { user: sessionStorage.getItem("user"), country: lcountry, social: 'instagram', agegroup: lagegroup, gender: lgender, link: this.state.insta_link, cost: 50.00, service: 'likes', count: this.state.i_likes }
+            //     let orderdetails = { user: Cookies.get('user'), country: lcountry, social: 'instagram', agegroup: lagegroup, gender: lgender, link: this.state.insta_link, cost: 50.00, service: 'likes', count: this.state.i_likes }
 
             //     orderService.saveorder(orderdetails).then(res => {
             //         if (res.status === 200 && res.statusText === 'OK') {
@@ -1247,7 +1248,7 @@ class Dash extends React.Component {
             // }
 
             // if (tw_f_check.checked && tw_l_check.checked) {
-            //     let orderdetails = { user: sessionStorage.getItem("user"), country: fcountry + ',' + lcountry, social: 'twitter', agegroup: fagegroup + ',' + lagegroup, gender: fgender + ',' + lgender, link: this.state.twitter_link, cost: 50.00, service: 'followers,likes', count: this.state.tw_followers + "," + this.state.tw_likes }
+            //     let orderdetails = { user: Cookies.get('user'), country: fcountry + ',' + lcountry, social: 'twitter', agegroup: fagegroup + ',' + lagegroup, gender: fgender + ',' + lgender, link: this.state.twitter_link, cost: 50.00, service: 'followers,likes', count: this.state.tw_followers + "," + this.state.tw_likes }
 
             //     orderService.saveorder(orderdetails).then(res => {
             //         if (res.status === 200 && res.statusText === 'OK') {
@@ -1258,7 +1259,7 @@ class Dash extends React.Component {
             //     });
             // } else 
             if (tw_f_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: fresult, social: 'twitter', agegroup: fagegroup, gender: fgender, link: this.state.twitter_link, cost: this.state.final_earning, service: 'followers', count: this.state.tw_followers }
+                let orderdetails = { user: Cookies.get('user'), country: fresult, social: 'twitter', agegroup: fagegroup, gender: fgender, link: this.state.twitter_link, cost: this.state.final_earning, service: 'followers', count: this.state.tw_followers }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {
@@ -1270,7 +1271,7 @@ class Dash extends React.Component {
                 });
             }
             // else if (tw_l_check.checked) {
-            //     let orderdetails = { user: sessionStorage.getItem("user"), country: lcountry, social: 'twitter', agegroup: lagegroup, gender: lgender, link: this.state.twitter_link, cost: 50.00, service: 'likes', count: this.state.tw_likes }
+            //     let orderdetails = { user: Cookies.get('user'), country: lcountry, social: 'twitter', agegroup: lagegroup, gender: lgender, link: this.state.twitter_link, cost: 50.00, service: 'likes', count: this.state.tw_likes }
 
             //     orderService.saveorder(orderdetails).then(res => {
             //         if (res.status === 200 && res.statusText === 'OK') {
@@ -1306,7 +1307,7 @@ class Dash extends React.Component {
                 fgender = "female";
             }
             if (ti_f_check.checked) {
-                let orderdetails = { user: sessionStorage.getItem("user"), country: fresult, social: 'tiktok', agegroup: fagegroup, gender: fgender, link: this.state.tiktok_link, cost: this.state.final_earning, service: 'followers', count: this.state.tw_followers }
+                let orderdetails = { user: Cookies.get('user'), country: fresult, social: 'tiktok', agegroup: fagegroup, gender: fgender, link: this.state.tiktok_link, cost: this.state.final_earning, service: 'followers', count: this.state.tw_followers }
 
                 orderService.saveorder(orderdetails).then(res => {
                     if (res.status === 200 && res.statusText === 'OK') {

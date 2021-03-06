@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import userServices from "../services/userServices";
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class EarnPage extends React.Component {
 
@@ -20,17 +21,17 @@ class EarnPage extends React.Component {
     }
 
     componentDidMount() {
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
 
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
 
-            userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
+            userServices.getProfileCompletion(Cookies.get('user')).then(res => {
                 if (res.data == "compeleted") {
                     this.setState({ earnstatus: '' });
                     var social = document.getElementById("socialearn");

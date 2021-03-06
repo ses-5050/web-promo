@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Cookies from 'js-cookie';
 //  import Java from "./Java";
 // import Login from "./pages/Login";
 // import Settings from "./pages/Settings";
@@ -55,6 +56,7 @@ import ETwitter from "./pages/temp/ETwitter";
 import ETikTok from "./pages/temp/ETikTok";
 import Dashb from "./pages/Dash";
 import VerifyEmail from "./pages/temp/VerifyEmail";
+import GetPath from "./pages/temp/getPath";
 
 
 //end admin
@@ -82,7 +84,7 @@ class App extends Component {
       // const store = new SessionKeystore({ name: 'other' });
       // console.log("store2nd=>", store)
       // const key = store.get('user');
-      var user = sessionStorage.getItem("user");
+      var user = Cookies.get('user');
       console.log("user=>", user)
 
       // if (user != null) {
@@ -153,6 +155,7 @@ class App extends Component {
                      <Route path="/tiktokfollow" component={TiktokFollow}></Route>
                      <Route path="/twitterfollow" component={TwitterFollow}></Route>
                      <Route path="/verifyemail" component={VerifyEmail}></Route>
+                     <Route path="/getpath" component={GetPath}></Route>
                      {/* temp path end */}
 
 

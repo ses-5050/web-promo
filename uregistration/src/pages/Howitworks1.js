@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from "react";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class Howitworks1 extends React.Component {
     render() {
@@ -18,7 +19,7 @@ class Howitworks1 extends React.Component {
                     <link rel="stylesheet" href="/assets/css/Team-Boxed.css" />
                     <link rel="stylesheet" href="/assets/css/Article-List.css" />
                 </Helmet>
-                <header class="header" style={{ backgroundColor: "white", height: "10%", width: "100%"  }}>
+                {/* <header class="header" style={{ backgroundColor: "white", height: "10%", width: "100%"  }}>
                     <section class="container header__inner" >
                         <div class="header__left" >
                             
@@ -45,11 +46,79 @@ class Howitworks1 extends React.Component {
                             </a>
                         </div>
                     </section>
-                </header>
+                </header> */}
+                {(() => {
+                    if (Cookies.get('user') == null) {
+                        <header class="header" style={{ backgroundColor: "white", height: "10%", width: "100%" }}>
+
+                            <section class="container header__inner" >
+                                <div class="header__left" >
+
+                                    <a href="/howitworks" class="nav__link pricing__link text_violet" >
+                                        How it Works
+                            </a>
+                                </div>
+                                <div class="header__right">
+                                    <a href="/register" class="button-register button_yellow ">
+                                        Registration
+                            </a>
+                                    <a href="/login" class="button-enter button_yellow ">
+                                        <div class="button-enter__text">
+                                            <span>Login</span>
+                                        </div>
+                                        <img class="button-enter__icon" src="assets/Image/earn/user.svg" alt=""></img>
+                                    </a>
+                                </div>
+                            </section>
+
+                        </header>
+                    } else {
+                        return (
+                            <header class="header" style={{ padding: "0 20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 4px rgba(0,0,0,.05)" }}>
+
+                                <section class="container header__inner">
+                                        <a class="action" href="/howitworks1">
+                                            <i
+                                                class="fa fa-arrow-circle-left"
+                                                style={{ fontSize: "34px", paddingTop: "5px" }}
+                                            ></i>
+                                        </a>
+                                    &emsp;&emsp;
+                                    <div class="header__left">
+                                        <a href="/userhome">
+                                            <img src="/assets/webicon.png" style={{ width: "161px", height: "61px" }} alt="Emoneytag" title="Emoneytag" />
+                                        </a>
+                                        <br />
+                                    </div>
+                                    <div class="header__right">
+                                        {/* <Link to="/profile" > */}
+                                        {/* <div class="accounticon">
+                                        <a href="#">   Contact us </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div> */}
+                                        {/* </Link> */}
+                                        <div class="accounticon">
+                                            <a href="/dash">  Dashboard&nbsp; </a>
+                                        </div>
+                                        <a href="/profile" >
+                                            <div class="accounticon">
+                                                <button type="button" class="btn btn-link btn-lg">
+                                                    <i class="fa fa-user-circle-o"></i></button>
+                                            </div>
+                                        </a>
+
+
+
+                                    </div>
+                                </section>
+
+                            </header>
+                        )
+                    }
+                })()}
                 <div class="team-boxed">
                     <div class="container">
                         <div class="intro">
-                            <h2 class="text-center" style={{ color: "rgb(3,23,44)",marginTop:"10%" }}>Methods of Earnings</h2>
+                            <h2 class="text-center" style={{ color: "rgb(3,23,44)", marginTop: "10%" }}>Methods of Earnings</h2>
                             <p class="text-center" style={{ color: "rgb(3,23,44)" }}>There are three types of Earnings. You can choose most prefferd method of earnings for you.</p>
                         </div>
                         <div class="row people">
@@ -77,47 +146,47 @@ class Howitworks1 extends React.Component {
                         </div>
                     </div>
                     <div class="footer-dark">
-                    <footer>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-3 item">
-                                    <h3>Services</h3>
-                                    <ul>
-                                        <li><a href="#">Terms of Servivce</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#"></a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6 col-md-3 item">
-                                    <h3>Contacts Us</h3>
-                                    <ul>
-                                        <li><a href="#">support@emoneytag.com</a></li>
-                                        <li><a href="#">FAQ</a></li>
-                                      
-                                    </ul>
-                                </div>
-                                <div class="col-md-6 item text">
-                                    <h3>EmoneyTag</h3>
-                                    <p>You can choose this method easily. Only you have to do is complete the
-                                         tasks provided by us, By using your social media account and earn points.
-                                          You can earn points by using Facebook, Twitter, Instagram, YouTube and TikTok social
+                        <footer>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-3 item">
+                                        <h3>Services</h3>
+                                        <ul>
+                                            <li><a href="#">Terms of Servivce</a></li>
+                                            <li><a href="#">Privacy Policy</a></li>
+                                            <li><a href="#"></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 item">
+                                        <h3>Contacts Us</h3>
+                                        <ul>
+                                            <li><a href="#">support@emoneytag.com</a></li>
+                                            <li><a href="#">FAQ</a></li>
+
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 item text">
+                                        <h3>EmoneyTag</h3>
+                                        <p>You can choose this method easily. Only you have to do is complete the
+                                        tasks provided by us, By using your social media account and earn points.
+                                        You can earn points by using Facebook, Twitter, Instagram, YouTube and TikTok social
                                            media accounts.your one tap can earn points for you.</p>
+                                    </div>
+                                    <div class="col item social"><a href="#">
+                                        <i class="icon ion-social-facebook"></i></a><a href="#">
+                                            <i class="icon ion-social-twitter"></i></a><a href="#">
+                                            <i class="icon ion-social-youtube"></i></a><a href="#">
+                                            <i class="icon ion-social-instagram"></i></a></div>
                                 </div>
-                                <div class="col item social"><a href="#">
-                                    <i class="icon ion-social-facebook"></i></a><a href="#">
-                                        <i class="icon ion-social-twitter"></i></a><a href="#">
-                                        <i class="icon ion-social-youtube"></i></a><a href="#">
-                                        <i class="icon ion-social-instagram"></i></a></div>
+                                <p class="copyright">©️ 2021 — EMONEYTAG.COM</p>
+
                             </div>
-                            <p class="copyright">©️ 2021 — EMONEYTAG.COM</p>
+                        </footer>
+                    </div>
 
-                        </div>
-                    </footer>
+
                 </div>
 
-               
-                </div>
-                
             </div>
         )
     }

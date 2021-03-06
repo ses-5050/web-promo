@@ -1,16 +1,20 @@
 package satasme.promo.web.controller;
 
+import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.ServletContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +31,7 @@ import satasme.promo.web.repository.LoginRepository;
 import satasme.promo.web.repository.PaymentReceiverRepositoryImpl;
 import satasme.promo.web.repository.UserPointsRepository;
 import satasme.promo.web.repository.UserRepository;
+import satasme.promo.web.service.FilesStorageServiceImpl;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -42,6 +47,10 @@ public class ProfileController {
 	protected EntityManager em;
 	@Autowired
 	private UserPointsRepository userPointsRepository;
+	@Autowired
+	private FilesStorageServiceImpl filesStorageServiceImpl;
+	@Autowired
+	ServletContext context;
 	
 	
 	@GetMapping("/{id}")
@@ -110,7 +119,7 @@ public class ProfileController {
 			Criteria cr = em.unwrap(Session.class).createCriteria(UserPoints.class);
 			cr.add(Restrictions.eq("user", user));
 			cr.add(Restrictions.eq("pointSource", "Profile Completion"));
-			if (cr.list()!=null) {
+			if (cr.list()==null) {
 				String crrdate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 				Criteria cr2 = em.unwrap(Session.class).createCriteria(Points.class);
 				cr2.add(Restrictions.eq("pointSource", "Profile Completion"));
@@ -134,6 +143,7 @@ public class ProfileController {
 	
 	@GetMapping("/detail/{id}")
 	public ProfileDetailResponse getProfileDetail(@PathVariable(value = "id") long userid) {
+		
 		ProfileDetailResponse pdr=new ProfileDetailResponse();
 		Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
 		cr2.add(Restrictions.eq("id", userid));
@@ -153,7 +163,24 @@ public class ProfileController {
 			total_points+=up.getPoints();
 		}
 		pdr.setPoints("$"+total_points);
-		
 		return pdr;
+	}
+	
+	@GetMapping("/profileimage/{id}")
+	public URI getProfileImage(@PathVariable(value = "id") long userid) {
+		
+		Criteria cr2 = em.unwrap(Session.class).createCriteria(User.class);
+		cr2.add(Restrictions.eq("id", userid));
+		User crruser = (User) cr2.uniqueResult();
+		
+		Resource loadProfile = filesStorageServiceImpl.loadProfile(crruser.getImg());
+		URI uri = null;
+		try {
+			uri = loadProfile.getURI();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return uri;
 	}
 }

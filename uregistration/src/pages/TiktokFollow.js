@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import userServices from "../services/userServices";
 import earningService from "../services/earningService";
 import { Helmet } from "react-helmet";
+import Cookies from 'js-cookie';
 
 class TiktokFollow extends React.Component {
 
@@ -28,7 +29,7 @@ class TiktokFollow extends React.Component {
 
 
     handleClick = (urlS) => {
-        let fblike = { userid: sessionStorage.getItem("user"), service: "Tiktok Followers", orderid: urlS.id }
+        let fblike = { userid: Cookies.get('user'), service: "Tiktok Followers", orderid: urlS.id }
 
 
         socialmedia.addFacebookLike(fblike)
@@ -44,7 +45,7 @@ class TiktokFollow extends React.Component {
             });
     }
     getpageData() {
-        socialmedia.getFacebookPageLike(sessionStorage.getItem("user"), "Tiktok Followers")
+        socialmedia.getFacebookPageLike(Cookies.get('user'), "Tiktok Followers")
             .then(res => {
                 this.setState({ url: res.data });
             });
@@ -52,9 +53,9 @@ class TiktokFollow extends React.Component {
 
     componentDidMount() {
         // window.location.reload();
-        var user = sessionStorage.getItem("user");
+        var user = Cookies.get('user');
         if (user != null) {
-            userServices.getProfileCompletion(sessionStorage.getItem("user")).then(res => {
+            userServices.getProfileCompletion(Cookies.get('user')).then(res => {
                 if (res.data == "compeleted") {
                     this.setState({ earnstatus: '' });
                     this.getpageData();
@@ -63,11 +64,11 @@ class TiktokFollow extends React.Component {
                 }
             });
     
-            earningService.getTotalEarning(sessionStorage.getItem("user")).then(res => {
+            earningService.getTotalEarning(Cookies.get('user')).then(res => {
                 this.setState({ total_earning: res.data });
             });
     
-            userServices.getUserById(sessionStorage.getItem("user")).then(res => {
+            userServices.getUserById(Cookies.get('user')).then(res => {
                 this.setState({ username: res.data.fname });
             });
         } else {
